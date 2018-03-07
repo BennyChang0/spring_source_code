@@ -962,6 +962,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	@Override
 	public void destroySingletons() {
+		// TODO clear all singleton bean
 		super.destroySingletons();
 		this.manualSingletonNames.clear();
 		clearByTypeCache();

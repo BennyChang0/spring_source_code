@@ -141,6 +141,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 		super(parent);
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// TODO 重启spring容器
 			refresh();
 		}
 	}

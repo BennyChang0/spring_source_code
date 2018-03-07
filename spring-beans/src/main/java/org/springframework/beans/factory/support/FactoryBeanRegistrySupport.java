@@ -224,6 +224,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 	@Override
 	public void destroySingletons() {
 		super.destroySingletons();
+		// TODO 清除所有singleton bean factories
 		this.factoryBeanObjectCache.clear();
 	}
 

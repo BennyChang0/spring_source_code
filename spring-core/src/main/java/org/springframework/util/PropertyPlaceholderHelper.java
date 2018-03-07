@@ -126,9 +126,10 @@ public class PropertyPlaceholderHelper {
 
 	protected String parseStringValue(
 			String value, PlaceholderResolver placeholderResolver, Set<String> visitedPlaceholders) {
-
+		// TODO value=classpath:xxx
 		StringBuilder result = new StringBuilder(value);
 
+		// TODO "${"
 		int startIndex = value.indexOf(this.placeholderPrefix);
 		while (startIndex != -1) {
 			int endIndex = findPlaceholderEndIndex(result, startIndex);

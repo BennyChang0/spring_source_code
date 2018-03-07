@@ -115,7 +115,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Map between depending bean names: bean name --> Set of bean names for the bean's dependencies */
 	private final Map<String, Set<String>> dependenciesForBeanMap = new ConcurrentHashMap<>(64);
 
-
+	/**
+	 * TODO 注册单例bean
+	 * @param beanName the name of the bean
+	 * @param singletonObject the existing singleton object
+	 * @throws IllegalStateException
+	 */
 	@Override
 	public void registerSingleton(String beanName, Object singletonObject) throws IllegalStateException {
 		Assert.notNull(beanName, "Bean name must not be null");
@@ -138,9 +143,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	protected void addSingleton(String beanName, Object singletonObject) {
 		synchronized (this.singletonObjects) {
+			// TODO 将bean添加到单例bean的map缓存
 			this.singletonObjects.put(beanName, singletonObject);
+			// TODO 单例注册成功后，从单例工厂缓存中移除
 			this.singletonFactories.remove(beanName);
+			// TODO 单例注册成功后，从early singleton缓存中移除
 			this.earlySingletonObjects.remove(beanName);
+			// TODO 加入到已注册的单例缓存中
 			this.registeredSingletons.add(beanName);
 		}
 	}
@@ -156,9 +165,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
+			// TODO singleton bean还没有注册成功
 			if (!this.singletonObjects.containsKey(beanName)) {
+				// TODO 添加到单例工厂缓存
 				this.singletonFactories.put(beanName, singletonFactory);
+				// TODO 从early singleton 缓存中移除
 				this.earlySingletonObjects.remove(beanName);
+				// TODO 加入到已注册的单例缓存中
 				this.registeredSingletons.add(beanName);
 			}
 		}

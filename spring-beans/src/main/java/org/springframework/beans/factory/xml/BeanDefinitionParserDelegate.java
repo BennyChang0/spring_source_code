@@ -512,6 +512,7 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
+			// TODO 创建 GenericBeanDefinition
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);

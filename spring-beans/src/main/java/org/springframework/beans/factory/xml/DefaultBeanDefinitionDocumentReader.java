@@ -127,6 +127,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// then ultimately reset this.delegate back to its original (parent) reference.
 		// this behavior emulates a stack of delegates without actually necessitating one.
 		BeanDefinitionParserDelegate parent = this.delegate;
+		// TODO 创建BeanDefinition解析代表对象
 		this.delegate = createDelegate(getReaderContext(), root, parent);
 
 		if (this.delegate.isDefaultNamespace(root)) {
@@ -145,6 +146,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		}
 
 		preProcessXml(root);
+		// TODO 解析doc文档
 		parseBeanDefinitions(root, this.delegate);
 		postProcessXml(root);
 
@@ -172,6 +174,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				if (node instanceof Element) {
 					Element ele = (Element) node;
 					if (delegate.isDefaultNamespace(ele)) {
+						// TODO 解析spring默认命名空间的bean
 						parseDefaultElement(ele, delegate);
 					}
 					else {
@@ -197,6 +200,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		}
 		else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
 			// recurse
+			// TODO 递归解析嵌套的<beans>
 			doRegisterBeanDefinitions(ele);
 		}
 	}

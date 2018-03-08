@@ -125,6 +125,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		if (hasBeanFactory()) {
 			// TODO 销毁context中的单例bean
 			destroyBeans();
+			// TODO beanFactory置为null
 			closeBeanFactory();
 		}
 		try {

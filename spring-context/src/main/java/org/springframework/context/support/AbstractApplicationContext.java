@@ -619,6 +619,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
 		// TODO 销毁旧的beanFactory及单例bean，创建新的beanFactory，读取配置文件转换beanDefinition
+		// TODO 委派 AbstractRefreshableApplicationContext
 		refreshBeanFactory();
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {

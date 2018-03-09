@@ -412,6 +412,7 @@ public class BeanDefinitionParserDelegate {
 	 */
 	@Nullable
 	public BeanDefinitionHolder parseBeanDefinitionElement(Element ele, @Nullable BeanDefinition containingBean) {
+		// TODO 解析element生成beanDefinition
 		String id = ele.getAttribute(ID_ATTRIBUTE);
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
 
@@ -423,6 +424,7 @@ public class BeanDefinitionParserDelegate {
 
 		String beanName = id;
 		if (!StringUtils.hasText(beanName) && !aliases.isEmpty()) {
+			// TODO 如果<Bean>元素中没有配置id属性时，将别名中的第一个值赋值给beanName
 			beanName = aliases.remove(0);
 			if (logger.isDebugEnabled()) {
 				logger.debug("No XML 'id' specified - using '" + beanName +
@@ -430,10 +432,12 @@ public class BeanDefinitionParserDelegate {
 			}
 		}
 
+		// TODO 检查<Bean>元素所配置的id或者name的唯一性, 是否包含子<Bean>元素
 		if (containingBean == null) {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
 
+		// TODO 详细解析BeanDefinition
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -512,9 +516,10 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
-			// TODO 创建 GenericBeanDefinition
+			// TODO 创建 GenericBeanDefinition, 记录className，不实例化，依赖注入时完成实例
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
+			// TODO 对当前的<Bean>元素中配置的一些属性进行解析和设置，如配置的scope属性等
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 
@@ -522,8 +527,11 @@ public class BeanDefinitionParserDelegate {
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
 
+			// TODO 解析constructor-arg
 			parseConstructorArgElements(ele, bd);
+			// TODO property
 			parsePropertyElements(ele, bd);
+			// TODO qualifier
 			parseQualifierElements(ele, bd);
 
 			bd.setResource(this.readerContext.getResource());
@@ -561,6 +569,7 @@ public class BeanDefinitionParserDelegate {
 			error("Old 1.x 'singleton' attribute in use - upgrade to 'scope' declaration", ele);
 		}
 		else if (ele.hasAttribute(SCOPE_ATTRIBUTE)) {
+			// TODO scope
 			bd.setScope(ele.getAttribute(SCOPE_ATTRIBUTE));
 		}
 		else if (containingBean != null) {
@@ -568,6 +577,7 @@ public class BeanDefinitionParserDelegate {
 			bd.setScope(containingBean.getScope());
 		}
 
+		// TODO 是否abstract
 		if (ele.hasAttribute(ABSTRACT_ATTRIBUTE)) {
 			bd.setAbstract(TRUE_VALUE.equals(ele.getAttribute(ABSTRACT_ATTRIBUTE)));
 		}
@@ -576,11 +586,14 @@ public class BeanDefinitionParserDelegate {
 		if (DEFAULT_VALUE.equals(lazyInit)) {
 			lazyInit = this.defaults.getLazyInit();
 		}
+		// TODO 设置lazy-init标识
 		bd.setLazyInit(TRUE_VALUE.equals(lazyInit));
 
+		// TODO autowire
 		String autowire = ele.getAttribute(AUTOWIRE_ATTRIBUTE);
 		bd.setAutowireMode(getAutowireMode(autowire));
 
+		// TODO depends-on
 		if (ele.hasAttribute(DEPENDS_ON_ATTRIBUTE)) {
 			String dependsOn = ele.getAttribute(DEPENDS_ON_ATTRIBUTE);
 			bd.setDependsOn(StringUtils.tokenizeToStringArray(dependsOn, MULTI_VALUE_ATTRIBUTE_DELIMITERS));
@@ -602,6 +615,7 @@ public class BeanDefinitionParserDelegate {
 			bd.setPrimary(TRUE_VALUE.equals(ele.getAttribute(PRIMARY_ATTRIBUTE)));
 		}
 
+		// TODO init-method
 		if (ele.hasAttribute(INIT_METHOD_ATTRIBUTE)) {
 			String initMethodName = ele.getAttribute(INIT_METHOD_ATTRIBUTE);
 			bd.setInitMethodName(initMethodName);
@@ -611,6 +625,7 @@ public class BeanDefinitionParserDelegate {
 			bd.setEnforceInitMethod(false);
 		}
 
+		// TODO destroy-method
 		if (ele.hasAttribute(DESTROY_METHOD_ATTRIBUTE)) {
 			String destroyMethodName = ele.getAttribute(DESTROY_METHOD_ATTRIBUTE);
 			bd.setDestroyMethodName(destroyMethodName);
@@ -620,9 +635,12 @@ public class BeanDefinitionParserDelegate {
 			bd.setEnforceDestroyMethod(false);
 		}
 
+		// TODO factory-method
 		if (ele.hasAttribute(FACTORY_METHOD_ATTRIBUTE)) {
 			bd.setFactoryMethodName(ele.getAttribute(FACTORY_METHOD_ATTRIBUTE));
 		}
+
+		// TODO factory-bean
 		if (ele.hasAttribute(FACTORY_BEAN_ATTRIBUTE)) {
 			bd.setFactoryBeanName(ele.getAttribute(FACTORY_BEAN_ATTRIBUTE));
 		}
@@ -838,6 +856,7 @@ public class BeanDefinitionParserDelegate {
 		}
 		this.parseState.push(new PropertyEntry(propertyName));
 		try {
+			// TODO Bean中已经有同名的property存在，则不进行解析，直接返回,只有第一个起作用
 			if (bd.getPropertyValues().contains(propertyName)) {
 				error("Multiple 'property' definitions for property '" + propertyName + "'", ele);
 				return;
@@ -906,6 +925,7 @@ public class BeanDefinitionParserDelegate {
 						"<constructor-arg> element";
 
 		// Should only have one child element: ref, value, list, etc.
+		// TODO 只能是其中一种类型:ref,value,list等
 		NodeList nl = ele.getChildNodes();
 		Element subElement = null;
 		for (int i = 0; i < nl.getLength(); i++) {
@@ -922,6 +942,7 @@ public class BeanDefinitionParserDelegate {
 			}
 		}
 
+		// TODO 不允许既是ref又是value
 		boolean hasRefAttribute = ele.hasAttribute(REF_ATTRIBUTE);
 		boolean hasValueAttribute = ele.hasAttribute(VALUE_ATTRIBUTE);
 		if ((hasRefAttribute && hasValueAttribute) ||

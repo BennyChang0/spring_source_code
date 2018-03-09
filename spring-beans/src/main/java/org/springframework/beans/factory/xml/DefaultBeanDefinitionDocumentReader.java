@@ -127,7 +127,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// then ultimately reset this.delegate back to its original (parent) reference.
 		// this behavior emulates a stack of delegates without actually necessitating one.
 		BeanDefinitionParserDelegate parent = this.delegate;
-		// TODO 创建BeanDefinition解析代表对象
+		// TODO 创建BeanDefinition解析代表对象, 具体负责bean解析
 		this.delegate = createDelegate(getReaderContext(), root, parent);
 
 		if (this.delegate.isDefaultNamespace(root)) {
@@ -178,12 +178,14 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 						parseDefaultElement(ele, delegate);
 					}
 					else {
+						// TODO 自定义命名空间的元素解析
 						delegate.parseCustomElement(ele);
 					}
 				}
 			}
 		}
 		else {
+			// TODO 自定义命名空间的元素解析(Document的根节点没有使用Spring默认的命名空间)
 			delegate.parseCustomElement(root);
 		}
 	}
@@ -224,6 +226,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// Discover whether the location is an absolute or relative URI
 		boolean absoluteLocation = false;
 		try {
+			// TODO 判断是否绝对路径
 			absoluteLocation = ResourcePatternUtils.isUrl(location) || ResourceUtils.toURI(location).isAbsolute();
 		}
 		catch (URISyntaxException ex) {
@@ -234,6 +237,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// Absolute or relative?
 		if (absoluteLocation) {
 			try {
+				// TODO 加载
 				int importCount = getReaderContext().getReader().loadBeanDefinitions(location, actualResources);
 				if (logger.isDebugEnabled()) {
 					logger.debug("Imported " + importCount + " bean definitions from URL location [" + location + "]");
@@ -255,6 +259,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				}
 				else {
 					String baseLocation = getReaderContext().getResource().getURL().toString();
+					// TODO 加载
 					importCount = getReaderContext().getReader().loadBeanDefinitions(
 							StringUtils.applyRelativePath(baseLocation, location), actualResources);
 				}
@@ -271,6 +276,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			}
 		}
 		Resource[] actResArray = actualResources.toArray(new Resource[actualResources.size()]);
+		// TODO 发布ImportDefinition事件
 		getReaderContext().fireImportProcessed(location, actResArray, extractSource(ele));
 	}
 
@@ -291,12 +297,14 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		}
 		if (valid) {
 			try {
+				// TODO 向DefaultListableBeanFactory注册别名
 				getReaderContext().getRegistry().registerAlias(name, alias);
 			}
 			catch (Exception ex) {
 				getReaderContext().error("Failed to register alias '" + alias +
 						"' for bean with name '" + name + "'", ele, ex);
 			}
+			// TODO 发布AliasDefinition注册事件
 			getReaderContext().fireAliasRegistered(name, alias, extractSource(ele));
 		}
 	}
@@ -306,11 +314,13 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * and registering it with the registry.
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
+		// TODO BeanDefinitionHolder是BeanDefinition的封装
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		if (bdHolder != null) {
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
 				// Register the final decorated instance.
+				// TODO Spring IoC容器注册解析得到的BeanDefinition
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
 			}
 			catch (BeanDefinitionStoreException ex) {
@@ -318,6 +328,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 						bdHolder.getBeanName() + "'", ele, ex);
 			}
 			// Send registration event.
+			// TODO 发布BeanComponentDefinition注册事件
 			getReaderContext().fireComponentRegistered(new BeanComponentDefinition(bdHolder));
 		}
 	}

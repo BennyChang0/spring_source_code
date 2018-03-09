@@ -69,6 +69,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
 	public Document loadDocument(InputSource inputSource, EntityResolver entityResolver,
 			ErrorHandler errorHandler, int validationMode, boolean namespaceAware) throws Exception {
 
+		// TODO 创建解析工厂 JavaEE标准的JAXP标准进行处理
 		DocumentBuilderFactory factory = createDocumentBuilderFactory(validationMode, namespaceAware);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Using JAXP provider [" + factory.getClass().getName() + "]");

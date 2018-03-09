@@ -300,6 +300,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	@Override
 	public int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException {
+		// TODO encoding
 		return loadBeanDefinitions(new EncodedResource(resource));
 	}
 
@@ -388,6 +389,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 			throws BeanDefinitionStoreException {
 		try {
+			// TODO xml 转换为 dom
 			Document doc = doLoadDocument(inputSource, resource);
 			// TODO 读取Document内容，注册BeanDefinition
 			return registerBeanDefinitions(doc, resource);
@@ -508,6 +510,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
 		// TODO 获取注册之前的beanDefinition数量
 		int countBefore = getRegistry().getBeanDefinitionCount();
+		// TODO 委派 DefaultBeanDefinitionDocumentReader 完成解析注册
 		documentReader.registerBeanDefinitions(doc, createReaderContext(resource));
 		return getRegistry().getBeanDefinitionCount() - countBefore;
 	}
@@ -525,6 +528,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	/**
 	 * Create the {@link XmlReaderContext} to pass over to the document reader.
 	 */
+	// TODO 创建XmlReaderContext，传递 Resource And Reader
 	public XmlReaderContext createReaderContext(Resource resource) {
 		return new XmlReaderContext(resource, this.problemReporter, this.eventListener,
 				this.sourceExtractor, this, getNamespaceHandlerResolver());

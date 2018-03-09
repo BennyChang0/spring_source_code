@@ -125,7 +125,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		if (hasBeanFactory()) {
 			// TODO 销毁context中的单例bean
 			destroyBeans();
-			// TODO beanFactory置为null
+			// TODO 关闭beanFactory
 			closeBeanFactory();
 		}
 		try {
@@ -133,7 +133,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
-			// TODO 读取配置文件，<bean>转换成BeanDefinition
+			// TODO 读取配置文件载入bean定义，<bean>转换成BeanDefinition, 委派 AbstractXmlApplicationContext
 			loadBeanDefinitions(beanFactory);
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;

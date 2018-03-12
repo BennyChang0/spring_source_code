@@ -861,6 +861,7 @@ public class BeanDefinitionParserDelegate {
 				error("Multiple 'property' definitions for property '" + propertyName + "'", ele);
 				return;
 			}
+			// TODO 解析获取property的值
 			Object val = parsePropertyValue(ele, bd, propertyName);
 			PropertyValue pv = new PropertyValue(propertyName, val);
 			parseMetaElements(ele, pv);
@@ -957,11 +958,13 @@ public class BeanDefinitionParserDelegate {
 				error(elementName + " contains empty 'ref' attribute", ele);
 			}
 			RuntimeBeanReference ref = new RuntimeBeanReference(refName);
+			// TODO 与所引用的属性关联起来
 			ref.setSource(extractSource(ele));
 			return ref;
 		}
 		else if (hasValueAttribute) {
 			TypedStringValue valueHolder = new TypedStringValue(ele.getAttribute(VALUE_ATTRIBUTE));
+			// TODO 与所引用的属性关联起来
 			valueHolder.setSource(extractSource(ele));
 			return valueHolder;
 		}

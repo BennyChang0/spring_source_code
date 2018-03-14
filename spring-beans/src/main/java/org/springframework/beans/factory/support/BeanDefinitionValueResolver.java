@@ -103,6 +103,7 @@ class BeanDefinitionValueResolver {
 	 */
 	@Nullable
 	public Object resolveValueIfNecessary(Object argName, @Nullable Object value) {
+		// TODO
 		// We must check each value to see whether it requires a runtime reference
 		// to another bean to be resolved.
 		if (value instanceof RuntimeBeanReference) {
@@ -350,6 +351,7 @@ class BeanDefinitionValueResolver {
 	 */
 	@Nullable
 	private Object resolveReference(Object argName, RuntimeBeanReference ref) {
+		// TODO
 		try {
 			Object bean;
 			String refName = ref.getBeanName();

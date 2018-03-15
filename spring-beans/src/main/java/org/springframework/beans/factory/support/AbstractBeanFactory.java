@@ -306,9 +306,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
-						// TODO dependentBeanMap注册依赖的Bean
 						registerDependentBean(dep, beanName);
-						// TODO 递归调用getBean方法，获取依赖Bean的依赖Bean
 						getBean(dep);
 					}
 				}
@@ -331,7 +329,6 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					// TODO 判断是否为工厂bean来获取真实的bean实例
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
-				// TODO 创建原型bean
 				else if (mbd.isPrototype()) {
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
@@ -346,7 +343,6 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					}
 					bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
 				}
-				// TODO 根据scope创建bean
 				else {
 					String scopeName = mbd.getScope();
 					final Scope scope = this.scopes.get(scopeName);
@@ -1344,7 +1340,6 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param beanName the bean name to clear the merged definition for
 	 */
 	protected void clearMergedBeanDefinition(String beanName) {
-		// TODO
 		this.mergedBeanDefinitions.remove(beanName);
 	}
 

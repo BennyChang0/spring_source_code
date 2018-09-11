@@ -589,7 +589,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// TODO 给bean的属性赋值 (user.setOrder(order))
 			populateBean(beanName, mbd, instanceWrapper);
-			// TODO BeanPostProcessor处理
+			// TODO (invokeAwareMethods, invokeInitMethods, applyBeanPostProcessorsBeforeInitialization, applyBeanPostProcessorsAfterInitialization)
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1721,6 +1721,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			// TODO afterPropertiesSet
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {

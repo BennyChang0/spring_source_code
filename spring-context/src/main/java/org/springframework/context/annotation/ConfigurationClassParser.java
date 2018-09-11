@@ -155,7 +155,7 @@ class ConfigurationClassParser {
 		this.conditionEvaluator = new ConditionEvaluator(registry, environment, resourceLoader);
 	}
 
-
+	// TODO 解析注解bean
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
 		this.deferredImportSelectors = new LinkedList<>();
 
@@ -238,6 +238,7 @@ class ConfigurationClassParser {
 		// Recursively process the configuration class and its superclass hierarchy.
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
+			// TODO 递归处理注解bean及子类
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass);
 		}
 		while (sourceClass != null);

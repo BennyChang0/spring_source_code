@@ -262,6 +262,7 @@ class ConfigurationClassParser {
 		processMemberClasses(configClass, sourceClass);
 
 		// Process any @PropertySource annotations
+		// TODO 解析 @PropertySource 注解
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
@@ -275,6 +276,7 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @ComponentScan annotations
+		// TODO 解析 @ComponentScan 注解
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() &&
@@ -294,9 +296,11 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @Import annotations
+		// TODO 解析 @Import 注解，处理 @ImportSelector
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
+		// TODO 解析 @ImportResource 注解
 		AnnotationAttributes importResource =
 				AnnotationConfigUtils.attributesFor(sourceClass.getMetadata(), ImportResource.class);
 		if (importResource != null) {
@@ -584,8 +588,10 @@ class ConfigurationClassParser {
 									new DeferredImportSelectorHolder(configClass, (DeferredImportSelector) selector));
 						}
 						else {
+							// TODO 返回需要导入的Class数组
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
+							// TODO 递归导入
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}

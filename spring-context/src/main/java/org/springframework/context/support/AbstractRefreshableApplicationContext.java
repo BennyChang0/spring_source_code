@@ -132,6 +132,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			// TODO 创建DefaultListableBeanFactory实例
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
+			// TODO 设置是否可以修改BeanDefinition，是否允许循环引用
 			customizeBeanFactory(beanFactory);
 			// TODO 读取配置文件载入bean定义，<bean>转换成BeanDefinition, 委派 AbstractXmlApplicationContext
 			loadBeanDefinitions(beanFactory);
